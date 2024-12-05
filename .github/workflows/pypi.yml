@@ -61,7 +61,5 @@ jobs:
         run: python setup.py sdist
 
       - name: Upload to PyPI
-        env:
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
         run: |
-          python -m twine upload --username grammar --password $PYPI_PASSWORD dist/*
+          python -m twine upload dist/*
