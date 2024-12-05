@@ -47,16 +47,14 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: pip install -r requirements.txt
+      - name: Install build tools
+        run: pip install build
 
-      - name: Build distribution package
-        run: python setup.py sdist bdist_wheel
+      - name: Build distribution packages
+        run: python -m build
 
       - name: Publish to PyPI
         env:
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+          PYPI_REPOSITORY_URL: https://upload.pypi.org/legacy/  # Default PyPI URL
         run: |
-          pip install build
-          python -m build --sdist --wheel
-          python -m twine upload --repository pypi dist/*
+          python -m twine upload --repository-url $PYPI_REPOSITORY_URL dist/*
