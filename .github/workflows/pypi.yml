@@ -19,16 +19,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install pipenv
-        run: pip install pipenv
-
       - name: Install dependencies
-        run: pipenv install
+        run: pip install -r requirements.txt
 
       - name: Run tests
-        run: |
-          python setup.py test
-          python setup.py install
+        run: pytest --junitxml=test-results/results.xml
 
       - name: Upload test results
         if: success()
@@ -49,17 +44,11 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install pipenv and twine
-        run: |
-          pip install pipenv
-          pip install twine
-
       - name: Install dependencies
-        run: pipenv install
+        run: pip install -r requirements.txt
 
       - name: Create sdist package
         run: python setup.py sdist
 
       - name: Upload to PyPI
-        run: |
-          python -m twine upload dist/*
+        run: python -m twine upload dist/*
