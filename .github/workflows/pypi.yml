@@ -1,0 +1,67 @@
+name: Build and Deploy
+
+on:
+  push:
+    tags:
+      - '*'
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.6'
+
+      - name: Install pipenv
+        run: pip install pipenv
+
+      - name: Install dependencies
+        run: pipenv install
+
+      - name: Run tests
+        run: |
+          python setup.py test
+          python setup.py install
+
+      - name: Upload test results
+        if: success()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-results
+          path: test-results
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.6'
+
+      - name: Install pipenv and twine
+        run: |
+          pip install pipenv
+          pip install twine
+
+      - name: Install dependencies
+        run: pipenv install
+
+      - name: Create sdist package
+        run: python setup.py sdist
+
+      - name: Upload to PyPI
+        env:
+          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+        run: |
+          python -m twine upload --username grammar --password $PYPI_PASSWORD dist/*

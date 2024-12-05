@@ -67,17 +67,17 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='0.0.6',
+    version='0.0.7',
 
     description='A Python wrapper for the Dominos Pizza API',
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.com/aluttik/pizzapi',
+    url='https://github.com/craigjmidwinter/pizzapi',
 
     # Author details
-    author='aluttik',
-    author_email='aluttik@gmail.com',
+    author='craigjmidwinter',
+    author_email='craig.j.midwinter@gmail.com',
 
     # What does your project relate to?
     keywords='dominos pizza api',
@@ -129,7 +129,7 @@ setup(
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
         'pyhamcrest',
-        'requests', 
+        'requests',
         'xmltodict',
     ],
     include_package_data=True,
