@@ -47,9 +47,8 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install build tools and twine
-        run: |
-          pip install build twine
+      - name: Install build tools
+        run: pip install build twine
 
       - name: Build distribution packages
         run: python -m build
@@ -57,4 +56,4 @@ jobs:
       - name: Publish to PyPI
         env:
           PYPI_REPOSITORY_URL: https://upload.pypi.org/legacy/
-        run: python -m twine upload --repository-url $PYPI_REPOSITORY_URL dist/*
+        run: python -m twine upload --non-interactive dist/*
