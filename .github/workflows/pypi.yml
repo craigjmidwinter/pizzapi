@@ -34,6 +34,9 @@ jobs:
 
   deploy:
     needs: build
+    permissions:
+      id-token: write
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -47,8 +50,13 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Create sdist package
-        run: python setup.py sdist
+      - name: Build distribution package
+        run: python setup.py sdist bdist_wheel
 
-      - name: Upload to PyPI
-        run: python -m twine upload dist/*
+      - name: Publish to PyPI
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+        run: |
+          pip install build
+          python -m build --sdist --wheel
+          python -m twine upload --repository pypi dist/*
